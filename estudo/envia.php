@@ -17,9 +17,9 @@
         <input type="date" id="DataNascimento" name="DataNascimento"/> 
         <br/>
         <input type="submit" value="Enviar"/>
-        <input type="reset" value="Limpar"/>   
-                
+        <input type="reset" value="Limpar"/>  
+
     </form>
-    
+
 </body>
 </html>
