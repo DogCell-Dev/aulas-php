@@ -27,11 +27,24 @@
             require_once("conexao.php"); 
             //Receber os valores do formulario
             $descricao = $_POST["txtDescricao"];
+
             //Criar o comando SQL para insercao
+            // $sql = "INSERT INTO categoria (descricao) 
+            //         VALUES ('$descricao')";
+
             $sql = "INSERT INTO categoria (descricao) 
-                    VALUES ('$descricao')";
+                    VALUES (?)";
+
             //Executar o comando SQL
-            mysqli_query($conexao, $sql);
+            //mysqli_query($conexao, $sql);
+
+            $comandoPreparado = $conexao->prepare($sql);
+            $comandoPreparado->bind_param("s", $descricao);
+            $comandoPreparado->execute();
+
+            // Evitar o multi_query pois permite a execucao de sql injetado
+            //mysqli_multi_query($conexao, $sql);
+            
             echo("<script>alert('Categoria cadastrada com sucesso!');</script>");
         }
         

@@ -24,44 +24,42 @@
             $usuario = $_POST["txtUsuario"];
             $senha   = $_POST["txtSenha"];
 
-            /*$sql = "SELECT usuario, perfilacesso FROM usuario
-                    WHERE usuario='$usuario' AND senha=sha1('$senha') "; 
-            $resultado = mysqli_query($conexao,$sql); */
+            // $sql = "SELECT usuario, perfilacesso FROM usuario
+            //         WHERE usuario='$usuario' AND senha=sha1('$senha') ";
 
             $sql = "SELECT usuario, perfilacesso FROM usuario
-                    WHERE usuario=? AND senha=sha1(?) ";
+                    WHERE usuario=? AND senha=sha1( ? )";
 
-            $comandoPreparando->bind_param("ss", $usuario, $senha);
-            
-            /*      CUIDADO COM O SQL INJECTION 
-                Ao digitar no nomr de usuario o calor: ' or '1' = '1' --
-                autenticar com sucesso, pois a consulta se torna:
-                    SELECT usuario, perfilacesso FROM usuario      
-            */        
+            // CUIDADO COM SQL INJECTION !!!!!!!!!
+            /*
+            Ao digitar no nome de usuario o valor: ' or '1' = '1' -- 
+            Autentica com sucesso, pois a consulta se torna:
+                SELECT usuario, perfilacesso FROM usuario
+            */
 
-            //$resultado = mysqli_query($conexao,$sql);
-            $comandoPreparando->execute();
-            $resultado = $comandoPreparando->execute();
-
-            /* 
-            s --> string 
+            $comandoPreparado = $conexao->prepare($sql);
+            $comandoPreparado->bind_param("ss", $usuario, $senha);
+            /*
+            s --> string
             d --> decimal (double / float)
             i --> int
             */
 
+            //$resultado = mysqli_query($conexao,$sql);
+            $comandoPreparado->execute();
+            $resultado = $comandoPreparado->get_result();
 
             // if(mysqli_num_rows($resultado) > 0)
             if( $resultado->num_rows > 0)
-            {    
-            //  $linha = mysqli_fetch_assoc($resultado);
+            {
+                //$linha = mysqli_fetch_assoc($resultado);    
                 $linha = $resultado->fetch_assoc();
                 session_start();
                 $_SESSION["usuarioLogado"] = $linha["usuario"];
                 $_SESSION["perfilAcesso"]  = $linha["perfilacesso"];
 
                 header("Location:index.php");
-            }         
-
+            }
             else
             {
                 echo("<script>alert('Usuario ou Senha Invalidos !')</script>");
