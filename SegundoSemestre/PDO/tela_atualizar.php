@@ -14,7 +14,7 @@
 
        $sql = "SELECT id, nome, email, idade  FROM aluno WHERE id=:i";
 
-       $comandoPreparado = $pdo->preparate($sql);
+       $comandoPreparado = $pdo->prepare($sql);
        $comandoPreparado->execute([ 'i' => $_GET ["id"] ]);
 
        if($comandoPreparado->rowCount == 0 )

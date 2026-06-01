@@ -5,7 +5,7 @@ if(isset($_GET["id"]))
 {
     $idRecebido = $_GET["id"];
     $sql = "DELETE FROM alunos WHERE id=:i";
-    $comandoPreparado = $pdo->preparate($sql);
+    $comandoPreparado = $pdo->prepare($sql);
     $comandoPreparado->execute([ 'i' => $idRecebido ]);
 }    
 
